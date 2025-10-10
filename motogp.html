@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Data MotoGP</title>
+</head>
+<body>
+  <h2>Data Pemenang MotoGP</h2>
+  <div id="output"></div>
+
+  <script>
+    var motoGP = [
+      {
+        circuit: 'Losail',
+        location: 'Qatar',
+        winner: { firstName: 'Andrea', lastName: 'Dovizioso', country: 'Italy' }
+      },
+      {
+        circuit: 'Autodromo',
+        location: 'Argentine',
+        winner: { firstName: 'Cal', lastName: 'Crutchlow', country: 'UK' }
+      },
+      {
+        circuit: 'De Jerez',
+        location: 'Spain',
+        winner: { firstName: 'Valentino', lastName: 'Rossi', country: 'Italy' }
+      },
+      {
+        circuit: 'Mugello',
+        location: 'Italy',
+        winner: { firstName: 'Andrea', lastName: 'Dovizioso', country: 'Italy' }
+      }
+    ];
+
+    var groupedWinners = {};
+
+    for (let race of motoGP) {
+      let country = race.winner.country;
+      let name = race.winner.firstName + ' ' + race.winner.lastName;
+      let winLocation = race.circuit + ', ' + race.location;
+
+      if (!groupedWinners[country]) {
+        groupedWinners[country] = {
+          winningCircuits: [],
+          totalWin: 0
+        };
+      }
+
+      groupedWinners[country].winningCircuits.push({
+        name: name,
+        winLocation: winLocation
+      });
+
+      groupedWinners[country].totalWin++;
+    }
+
+    let outputDiv = document.getElementById("output");
+
+    for (let country in groupedWinners) {
+      let section = document.createElement("div");
+      section.innerHTML = `<h3>${country} (Total Win: ${groupedWinners[country].totalWin})</h3>`;
+      
+      let list = document.createElement("ul");
+      groupedWinners[country].winningCircuits.forEach(circuit => {
+        let li = document.createElement("li");
+        li.textContent = `${circuit.name} - ${circuit.winLocation}`;
+        list.appendChild(li);
+      });
+
+      section.appendChild(list);
+      outputDiv.appendChild(section);
+    }
+  </script>
+</body>
+</html>
